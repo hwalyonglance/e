@@ -3,25 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	<script src='socket.io-client/dist/socket.io.js'></script>
-	<script src='socketio-file-upload/client.min.js'></script>
 </head>
 <body>
 	<script>
 		var myWorker = new Worker("worker.js");
-		// setInterval(function(){
-			// myWorker.postMessage(['satu','dua']);
-		// }, 4000)
-
 		myWorker.onmessage = function(e) {
 			console.log('Message received from worker', e);
 		}
-
 	</script>
 </body>
 </html>
-
-
-
-
-
