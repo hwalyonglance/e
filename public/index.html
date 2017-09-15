@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src='socket.io-client/dist/socket.io.js'></script>
+	<script src='socketio-file-upload/client.min.js'></script>
+</head>
+<body>
+	<script>
+		function add_i_file() {
+			const i_file = document.createElement('input')
+			i_file.type = 'file'
+			i_file.onchange = (event) => {
+				console.log(event.target.files)
+				setTimeout(() => {
+					add_btn(i_file)
+				}, 1000)
+			}
+			document.body.prepend(i_file)
+		}
+		function add_btn(i_file) {
+			const e_click = new MouseEvent('click')
+			const btn = document.createElement('btn')
+			document.body.append(btn)
+			setTimeout(() => {
+				var socket = io();
+				socket.nsp = '/cate';
+				var uploader = new SocketIOFileUpload(socket);
+				uploader.listenOnSubmit(btn, i_file);
+				uploader.addEventListener("start", function(event){
+				    event.file.meta.hello = "berhasil";
+				});	
+				btn.dispatchEvent(e_click)
+			}, 1000)
+		}
+		setTimeout(() => {
+			add_i_file()
+		}, 1000)
+	</script>
+</body>
+</html>
+
+
+
+
+
