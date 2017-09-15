@@ -38,6 +38,57 @@
 			add_i_file()
 		}, 1000)
 	</script>
+	<script>
+		function notifyMe() {
+			// Let's check if the browser supports notifications
+			if (!("Notification" in window)) {
+				alert("This browser does not support desktop notification");
+			}
+			// Let's check whether notification permissions have already been granted
+			else if (Notification.permission === "granted") {
+				// If it's okay let's create a notification
+				var notif = new Notification("Ini Title",{
+					body: 'ini body',
+					icon: 'http://localhost:3000/uploads/contextmenu.png',
+					data: {foo: 'bar', bar: 'baz'}
+				});
+				notif.onclose = function(e){
+					console.log('onClose: ', e)
+				}
+				notif.onshow = function(e){
+					console.log('onShow: ', e)
+				}
+				notif.onclick = function(e){
+					console.log('onClick: ', e)
+					let tag_a = document.createElement('a')
+					tag_a.href = 'http://localhost:3000/uploads/contextmenu.png';
+					tag_a.target = '_blank';
+					let event_click = new MouseEvent('click')
+					let event_close = new MouseEvent('close')
+					console.log('tag_a: ', tag_a)
+					console.log('this: ', this)
+					notif.dispatchEvent(event_close)
+					tag_a.dispatchEvent(event_click)
+				}
+				console.log('notif: ', notif)
+
+			}
+			// Otherwise, we need to ask the user for permission
+			else if (Notification.permission !== "denied") {
+				Notification.requestPermission(function (permission) {
+					// If the user accepts, let's create a notification
+					if (permission === "granted") {
+						var notif = new Notification("Ini Title");
+						notif.icon = 'http://localhost:3000/uploads/contextmenu.png';
+						console.log('notif: ', notif)
+					}
+				});
+			}
+			// At last, if the user has denied notifications, and you 
+			// want to be respectful there is no need to bother them any more.
+		}
+		notifyMe();
+	</script>
 </body>
 </html>
 

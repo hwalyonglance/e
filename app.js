@@ -23,21 +23,12 @@ $Socket.of('/cate').on("connection", function(_socket){
 		uploader.dir = path.join(__dirname, 'public', 'uploads');
 		uploader.listen(_socket);
 		uploader.on("saved", function(event){
-			console.log(event)
 			const ext = event.file.name.split('.');
-			console.log(event.file.base + '.' + ext[ ext.length - 1 ])
 		});
-		console.log('/cate')
 });
-$Socket.of('/item').on('connection', (_socket) => {
-	console.log('/item')
-})
 
 server.listen(3000)
 server.on('listening', () => {
 	console.log('http://localhost:3000');
 });
 
-fs.unlink(path.join(__dirname, 'public', 'uploads', 'swio.png'), (err) => {
-	console.log(err)
-});
