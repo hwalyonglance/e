@@ -11,12 +11,15 @@ var app = express();
 app.use(express.static(path.join(__dirname, 'node_modules')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
 
-})
+// app.get('/', (req, res) => {
+
+// })
 
 var server = http.createServer(app)
 var $Socket = io(server);
+
+require('./db')($Socket)
 
 $Socket.of('/cate').on("connection", function(_socket){
 		var uploader = new siofu();
@@ -33,11 +36,12 @@ $Socket.of('/item').on('connection', (_socket) => {
 	console.log('/item')
 })
 
+$Socket.on('connect', function(_socket) {
+	console.log('connect', _socket)
+})
+
 server.listen(3000)
 server.on('listening', () => {
 	console.log('http://localhost:3000');
 });
 
-fs.unlink(path.join(__dirname, 'public', 'uploads', 'swio.png'), (err) => {
-	console.log(err)
-});
