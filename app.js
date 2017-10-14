@@ -35,7 +35,7 @@ $Socket.on('connect', function(_socket) {
 	console.log('connect', _socket)
 })
 
-server.listen(proccess.env.PORT || 3000)
+server.listen(process.env.PORT || 3000)
 server.on('listening', () => {
 	console.log('http://localhost:3000');
 });
