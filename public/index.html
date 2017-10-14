@@ -5,31 +5,10 @@
 	<title>Document</title>
 	<script src='socket.io-client/dist/socket.io.js'></script>
 	<script src='socketio-file-upload/client.min.js'></script>
-	<script src="jquery-3.2.1.min.js"></script>
 </head>
 <body>
-	<button id="btnTambah">Tambah</button>
-	<table id="gen" border="1px" style="width: 100%; border-collapse: collapse;">
-		<thead>
-			<tr>
-				<th>Category</th>
-				<th>CreatedAt</th>
-				<th>UpdatedAt</th>
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>foo</td>
-				<td>foo</td>
-				<td>foo</td>
-				<td>foo</td>
-			</tr>
-		</tbody>
-	</table>
 	<script>
-		const $Socket = io();
-		(function add_i_file() {
+		function add_i_file() {
 			const i_file = document.createElement('input')
 			i_file.type = 'file'
 			i_file.onchange = (event) => {
@@ -39,7 +18,7 @@
 				}, 1000)
 			}
 			document.body.prepend(i_file)
-		})()
+		}
 		function add_btn(i_file) {
 			const e_click = new MouseEvent('click')
 			const btn = document.createElement('btn')
@@ -50,81 +29,14 @@
 				var uploader = new SocketIOFileUpload(socket);
 				uploader.listenOnSubmit(btn, i_file);
 				uploader.addEventListener("start", function(event){
-					event.file.meta.hello = "berhasil";
+				    event.file.meta.hello = "berhasil";
 				});	
 				btn.dispatchEvent(e_click)
 			}, 1000)
 		}
-
-		////////////////////////////////////////
-		$('#btnTambah').click(function() {
-			$Socket.emit('add', {
-				Category: 'Category ' + Date.now()
-			});
-		})
-		function $update(arg) {
-			$Socket.emit('update', {
-				Category: arg.Category + ' Updated',
-				createdAt: arg.createdAt,
-				updatedAt: arg.updatedAt
-			})
-		}
-		function $delete(createdAt) {
-			$Socket.emit('delete', createdAt)
-		}
-		////////////////////////////////////////
-		let data = [];
-		let URLS = [];
-		function __gen(args) {
-			$('#gen tbody').empty();
-			for( arg of args ){
-				$('#gen tbody').append(
-					`
-						<tr>
-							<td>${arg.Category}</td>
-							<td>${arg.createdAt}</td>
-							<td>${arg.updatedAt}</td>
-							<td>
-								<button onclick='$update(${JSON.stringify(arg)})'>Update</button>
-								 | 
-								<button onclick='$delete(${arg.createdAt})'>Delete</button>
-							</td>
-						</tr>
-					`
-				)
-			}
-		}
-
-		$Socket.on('connect',function(arg) {
-			console.log('connect', arg)
-		})
-		$Socket.emit('gets', function ($Categories, urls) {
-			data = $Categories;
-			URLS = urls;
-			console.log(urls)
-			__gen(data)
-		});
-		$Socket.on('add', function (Category) {
-			data.push(Category)
-			__gen(data)
-		});
-		$Socket.on('update', function (Category) {
-			Object.keys(data).map(function($key) {
-				if ( Category.createdAt === data[$key].createdAt ) {
-					Object.assign(data[$key],{
-						Category: data[$key].Category + '-=-=-===-=-=-=-==-',
-						updatedAt: Date.now() 
-					})
-				}
-			})
-			__gen(data)
-		});
-		$Socket.on('delete', function (_id) {
-			data = data.filter(function(Category) {
-				return Category.createdAt !== _id
-			})
-			__gen(data)
-		});
+		setTimeout(() => {
+			add_i_file()
+		}, 1000)
 	</script>
 </body>
 </html>
