@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "express": "*",
     "mongoose": "^4.11.1",
     "multer": "^1.3.0",
     "node-querybuilder": "^0.15.0",
