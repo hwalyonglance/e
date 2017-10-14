@@ -12,4 +12,4 @@ self.addEventListener('install', function(event) {
 	console.log('installing worker')
 });
 // self === DedicatedWorkerGlobalScope
-console.log('self', self)
+console.log('[worker]', self)
